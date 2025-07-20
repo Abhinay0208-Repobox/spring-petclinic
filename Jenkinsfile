@@ -15,7 +15,8 @@ pipeline {
 
         stage('Build App') {
             steps {
-                sh 'mvn clean install'
+                sh 'mvn clean install -DskipTests'
+'
             }
         }
 

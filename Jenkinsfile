@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-        IMAGE_NAME = 'abhinay1206/spring-petclinic'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Update if you used a different ID
+        IMAGE_NAME = 'abhinay1206/spring-petclinic'  // Change to your Docker Hub repo
     }
 
     stages {
         stage('Clone') {
             steps {
-                git url "https://github.com/Abhinay0208-Repobox/spring-petclinic.git", branch: 'main'
+                git branch: 'main', url: 'https://github.com/Abhinay0208-Repobox/spring-petclinic.git'
             }
         }
 

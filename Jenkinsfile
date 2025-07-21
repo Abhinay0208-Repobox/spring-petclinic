@@ -2,40 +2,38 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Update if you used a different ID
-        IMAGE_NAME = 'abhinay1206/spring-petclinic'  // Change to your Docker Hub repo
+        IMAGE_NAME = "abhinay1206/spring-petclinic"  // Change to your Docker Hub repo
     }
-
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
+                
                 git branch: 'main', url: 'https://github.com/Abhinay0208-Repobox/spring-petclinic.git'
             }
         }
 
-        stage('Build App') {
+        stage('Build Jar') {
             steps {
                 sh 'mvn clean install -DskipTests'
-'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build("${IMAGE_NAME}")
-                }
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Push to DockerHub') {
             steps {
-                script {
-                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
-                        dockerImage.push()
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                        echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
+                        docker push $IMAGE_NAME
+                    """
                 }
             }
         }
     }
 }
+

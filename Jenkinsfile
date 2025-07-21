@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 9090:9090 abhinay1206/spring-petclinic'
+                sh 'docker run -d -p 9090:8080 abhinay1206/spring-petclinic'
             }
         }
     }

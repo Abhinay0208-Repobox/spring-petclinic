@@ -14,7 +14,7 @@ pipeline {
 
         stage('Build Jar') {
             steps {
-                sh 'mvn clean install -DskipTests'
+                 sh 'mvn clean install -DskipTests -Dmaven.compiler.release=17'
             }
         }
 
